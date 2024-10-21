@@ -2,6 +2,7 @@ package br.com.fiap;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.jsonb.JsonBindingFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
@@ -23,10 +24,16 @@ public class Main {
         // create a resource config that scans for JAX-RS resources and providers
         // in br.com.fiap package
         final ResourceConfig rc = new ResourceConfig().packages("br.com.fiap");
+        rc.register(JsonBindingFeature.class);
 
+        String port = System.getenv("PORT");
+        if (port == null || port.isEmpty()) {
+            port = "8080"; // Porta padrão para desenvolvimento local
+        }
+        URI baseUri = URI.create("http://0.0.0.0:" + port + "/");
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
-        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+        return GrizzlyHttpServerFactory.createHttpServer(baseUri, rc);
     }
 
     /**
