@@ -1,5 +1,6 @@
 package br.com.fiap;
 
+import br.com.fiap.games.filter.CorsFilter;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.jsonb.JsonBindingFeature;
@@ -25,6 +26,7 @@ public class Main {
         // in br.com.fiap package
         final ResourceConfig rc = new ResourceConfig().packages("br.com.fiap");
         rc.register(JsonBindingFeature.class);
+        rc.register(CorsFilter.class);
 
         String port = System.getenv("PORT");
         if (port == null || port.isEmpty()) {
